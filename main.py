@@ -26,15 +26,13 @@ class Circle(pg.sprite.Sprite):
 class Mouse_location(pg.sprite.Sprite):
     def __init__(self,x,y):
         pg.sprite.Sprite.__init__(self)
-        self.x = x
-        self.y = y
         self.rel = (0,0)
         self.rect = pg.Rect(x,y,1,1)
 
 c1 = Circle(100,100,'circle.png',7)
 x_mouse,y_mouse = pg.mouse.get_pos()
 mouse_sprite = Mouse_location(x_mouse, y_mouse)
-        
+
 
 while True:
     for event in pg.event.get():
@@ -42,11 +40,11 @@ while True:
             pg.quit()
             exit()
         elif event.type == pg.MOUSEMOTION:
-            mouse_sprite.x,mouse_sprite.y = pg.mouse.get_pos()
+            mouse_sprite.rect.x,mouse_sprite.rect.y = pg.mouse.get_pos()
             mouse_sprite.rel = pg.mouse.get_rel()
-            print(mouse_sprite.x, mouse_sprite.y)
-    # print('False')
-    # print(pg.mouse.get_pos(),pg.mouse.get_rel())
+        if pg.sprite.collide_rect(c1,mouse_sprite):
+            print('YES')
+
     screen.blit(c1.image,c1.rect)
 
 
