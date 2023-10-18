@@ -9,7 +9,7 @@ pg.init()
 clock = pg.time.Clock()
 screen = pg.display.set_mode((500,300))
 pg.display.set_caption('System')
-
+amount_screenshot = 0
 
 class Circle(pg.sprite.Sprite):
     #Класс для спрайта круг
@@ -35,14 +35,23 @@ class Circle(pg.sprite.Sprite):
         #Функция возврата круга на исходную позицию
         direction_x,direction_y = 0,0
         
-
+        # extra_x, extra_y = abs(self.start_x - self.rect.x), abs(self.start_y - self.rect.y)
         if self.rect.x!=self.start_x:
-            # self.image = self.image2
+            self.image = self.image2
+            # if extra_x>extra_y:
+            #     direction_x = 2 if self.start_x - self.rect.x > 0 else -2
+            # else:
             direction_x = 1 if self.start_x - self.rect.x > 0 else -1
         if self.rect.y!=self.start_y:
-            # self.image = self.image2
+            self.image = self.image2
+            # if extra_y>extra_x:
+            #     direction_y = -2 if self.start_y - self.rect.y > 0 else 2
+            # else:
             direction_y = -1 if self.start_y - self.rect.y > 0 else 1
+    
+
         if self.rect.x == self.start_x and self.rect.y == self.start_y:
+            direction_x,direction_y = 0,0
             self.image = self.image1
         self.rect.x+=direction_x
         self.rect.y-=direction_y
@@ -70,11 +79,18 @@ while True:
             #проверка движения мыши
             mouse_sprite.rect.centerx,mouse_sprite.rect.centery = pg.mouse.get_pos()
             mouse_sprite.rel = pg.mouse.get_rel()
+        elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+            #Скриншот состояния экрана
+            rect = pg.Rect(0, 0, 500, 300)
+            sub = screen.subsurface(rect)
+            pg.image.save(sub, f"screenshot{amount_screenshot}.jpg")
+            amount_screenshot+=1
         for s in circles:
             if pg.sprite.collide_rect(s,mouse_sprite):
                 #проверка прикосновения спрайтов с мышкой
-                s.rect.x += mouse_sprite.rel[0]*2
-                s.rect.y += mouse_sprite.rel[1]*2
+                s.rect.x += mouse_sprite.rel[0]*3 
+                s.rect.y += mouse_sprite.rel[1]*3 
+
     
     screen.fill((0,0,0))
     circles.update()
