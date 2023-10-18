@@ -60,7 +60,7 @@ class Mouse_location(pg.sprite.Sprite):
     def __init__(self,x,y):
         pg.sprite.Sprite.__init__(self)
         self.rel = (0,0)
-        self.rect = pg.Rect(x,y,20,20)
+        self.rect = pg.Rect(x,y,25,25)
 
 
 circles = pg.sprite.Group()
@@ -85,11 +85,13 @@ while True:
             sub = screen.subsurface(rect)
             pg.image.save(sub, f"screenshot{amount_screenshot}.jpg")
             amount_screenshot+=1
-        for s in circles:
-            if pg.sprite.collide_rect(s,mouse_sprite):
-                #проверка прикосновения спрайтов с мышкой
-                s.rect.x += mouse_sprite.rel[0]*3 
-                s.rect.y += mouse_sprite.rel[1]*3 
+    for s in circles:
+        if pg.sprite.collide_rect(s,mouse_sprite):
+            #проверка прикосновения спрайтов с мышкой
+            s.rect.x += mouse_sprite.rel[0]*3 
+            s.rect.y += mouse_sprite.rel[1]*3 
+            # pg.sprite.collide_rect(s,mouse_sprite.rect.left)
+                
 
     
     screen.fill((0,0,0))
